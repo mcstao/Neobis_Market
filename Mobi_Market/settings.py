@@ -164,6 +164,7 @@ CLOUDINARY_STORAGE = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = ["https://nataliya-backender.org.kg/"]
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'DRF Mobi_Market Project',
