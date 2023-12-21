@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'users_app',
     'products',
     'drf_spectacular',
-    'corsheaders'
+    'corsheaders',
+    'cloudinary',
+    'cloudinary_storage'
 
 ]
 
