@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
         message="Номер должен быть такого формата: '0xxxxxxxxx'."
     )
     phone_number = models.CharField(validators=[phone_regex], max_length=10, unique=True, blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatar_pics/', blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatar_pics/', default='https://res.cloudinary.com/dbiyaguqb/image/upload/v1703179554/media/avatar_pics/pitcrmjoyykcpaqy2gjj.jpg')
     verify_code = models.CharField(max_length=4, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
