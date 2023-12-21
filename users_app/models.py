@@ -11,10 +11,10 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=50, null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     phone_regex = RegexValidator(
-        regex=r'^\0\d{9}$',
+        regex=r'^0\d{9}$',
         message="Номер должен быть такого формата: '0xxxxxxxxx'."
     )
-    phone_number = models.CharField(validators=[phone_regex], max_length=13, unique=True, blank=True, null=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=10, unique=True, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatar_pics/', blank=True, null=True)
     verify_code = models.CharField(max_length=4, blank=True, null=True)
     is_verified = models.BooleanField(default=False)

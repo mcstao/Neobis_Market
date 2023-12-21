@@ -1,0 +1,965 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/schema/:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /products/:
+    get:
+      operationId: products_list
+      description: Этот эндпоинт служит для подтверждение почты
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+  /products/{id}/:
+    get:
+      operationId: products_retrieve
+      description: Этот эндпоинт служит для просмотра, изменения, удаления 1 товара
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+    put:
+      operationId: products_update
+      description: Этот эндпоинт служит для просмотра, изменения, удаления 1 товара
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+    patch:
+      operationId: products_partial_update
+      description: Этот эндпоинт служит для просмотра, изменения, удаления 1 товара
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProductDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProductDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProductDetail'
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+    delete:
+      operationId: products_destroy
+      description: Этот эндпоинт служит для просмотра, изменения, удаления 1 товара
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /products/create/:
+    post:
+      operationId: products_create_create
+      description: Этот эндпоинт создает товар
+      tags:
+      - products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+  /products/like/{product_id}/:
+    patch:
+      operationId: products_like_partial_update
+      description: Этот эндпоинт служит для нажатия на лайк
+      parameters:
+      - in: path
+        name: product_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /products/likes/:
+    get:
+      operationId: products_likes_list
+      description: Этот эндпоинт служит для просмотра понравившихся товаров
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+  /products/likes/{id}/:
+    get:
+      operationId: products_likes_retrieve
+      description: Просмотр лайкнутого товара, если надо
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetail'
+          description: ''
+  /products/unlike/{product_id}/:
+    patch:
+      operationId: products_unlike_partial_update
+      description: Этот эндпоинт служит для отмены лайка
+      parameters:
+      - in: path
+        name: product_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /products/user/:
+    get:
+      operationId: products_user_list
+      description: Этот эндпоинт возврщает товары пользователя
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+  /users/activate_phone/:
+    post:
+      operationId: users_activate_phone_create
+      description: Этот эндпоинт служит для подтверждение кода
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyCode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyCode'
+        required: true
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Номер успешно зарегистрирован
+          description: ''
+  /users/api/token/:
+    post:
+      operationId: users_api_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /users/api/token/refresh/:
+    post:
+      operationId: users_api_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /users/api/token/verify/:
+    post:
+      operationId: users_api_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /users/info/:
+    get:
+      operationId: users_info_retrieve
+      description: Этот эндпоинт служит для действий с данными пользователя
+      tags:
+      - users
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+    put:
+      operationId: users_info_update
+      description: Этот эндпоинт служит для действий с данными пользователя
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+        required: true
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+    patch:
+      operationId: users_info_partial_update
+      description: Этот эндпоинт служит для действий с данными пользователя
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfile'
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /users/login/:
+    post:
+      operationId: users_login_create
+      description: Этот эндпоинт служит для получение токена, ну вы знаете, получаете
+        access and refresh токены
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+        required: true
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginUser'
+          description: ''
+  /users/register/:
+    post:
+      operationId: users_register_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+        required: true
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUser'
+          description: ''
+  /users/set_phone/:
+    put:
+      operationId: users_set_phone_update
+      description: Этот эндпоинт служит для установки номера начиная , номер должен
+        начинаться с 0 и далее 9 цифр
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+      security:
+      - tokenAuth: []
+      - basicAuth: []
+      - cookieAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Номер сохранен в базе теперь, теперь к коду
+          description: ''
+components:
+  schemas:
+    LoginUser:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    PatchedProductDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          type: integer
+        title:
+          type: string
+          maxLength: 150
+        price:
+          type: integer
+        total_likes:
+          type: integer
+          readOnly: true
+        user_like:
+          type: boolean
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          nullable: true
+        short_description:
+          type: string
+          maxLength: 255
+        long_description:
+          type: string
+    PatchedUserProfile:
+      type: object
+      properties:
+        first_name:
+          type: string
+          nullable: true
+          maxLength: 50
+        last_name:
+          type: string
+          nullable: true
+          maxLength: 50
+        username:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        phone_number:
+          type: string
+          nullable: true
+          pattern: ^0\d{9}$
+          maxLength: 10
+    PhoneNumber:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          nullable: true
+          pattern: ^0\d{9}$
+          maxLength: 10
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          type: integer
+        title:
+          type: string
+          maxLength: 150
+        price:
+          type: integer
+        total_likes:
+          type: integer
+          readOnly: true
+        user_like:
+          type: boolean
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - author
+      - id
+      - price
+      - title
+      - total_likes
+      - user_like
+    ProductDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          type: integer
+        title:
+          type: string
+          maxLength: 150
+        price:
+          type: integer
+        total_likes:
+          type: integer
+          readOnly: true
+        user_like:
+          type: boolean
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          nullable: true
+        short_description:
+          type: string
+          maxLength: 255
+        long_description:
+          type: string
+      required:
+      - author
+      - id
+      - long_description
+      - price
+      - short_description
+      - title
+      - total_likes
+      - user_like
+    RegisterUser:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          maxLength: 30
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 15
+          minLength: 8
+        password_confirm:
+          type: string
+          writeOnly: true
+          maxLength: 15
+          minLength: 8
+      required:
+      - email
+      - password
+      - password_confirm
+      - username
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+    UserProfile:
+      type: object
+      properties:
+        first_name:
+          type: string
+          nullable: true
+          maxLength: 50
+        last_name:
+          type: string
+          nullable: true
+          maxLength: 50
+        username:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        phone_number:
+          type: string
+          nullable: true
+          pattern: ^0\d{9}$
+          maxLength: 10
+      required:
+      - username
+    VerifyCode:
+      type: object
+      properties:
+        verify_code:
+          type: string
+      required:
+      - verify_code
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

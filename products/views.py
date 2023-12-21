@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, views, status
-from django.shortcuts import render
 from rest_framework.response import Response
 
 from users_app.permission import IsVerifiedOrReadOnly, IsOwnerProfileOrReadOnly
@@ -8,25 +8,38 @@ from products.serializers import ProductSerializer, ProductDetailSerializer
 from .models import Product
 
 
+@extend_schema(
+    description='Этот эндпоинт создает товар'
+)
 class ProductCreateAPIView(generics.CreateAPIView):
     serializer_class = ProductDetailSerializer
     permission_classes = [permissions.IsAuthenticated, IsVerifiedOrReadOnly]
+
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
 
+@extend_schema(
+    description='Этот эндпоинт служит для подтверждение почты'
+)
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
+@extend_schema(
+    description='Этот эндпоинт служит для просмотра, изменения, удаления 1 товара'
+)
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
     permission_classes = [permissions.IsAuthenticated, IsVerifiedOrReadOnly]
 
 
+@extend_schema(
+    description='Этот эндпоинт возврщает товары пользователя'
+)
 class UserProductList(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -37,6 +50,9 @@ class UserProductList(generics.ListAPIView):
 
 class ProductLikeAPIView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
+    @extend_schema(
+        description='Этот эндпоинт служит для нажатия на лайк'
+    )
 
     def patch(self, request, product_id):
         user = request.user
@@ -54,6 +70,9 @@ class ProductLikeAPIView(views.APIView):
 
 class ProductUnlikeAPIView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
+    @extend_schema(
+        description='Этот эндпоинт служит для отмены лайка'
+    )
 
     def patch(self, request, product_id):
         user = request.user
@@ -69,6 +88,9 @@ class ProductUnlikeAPIView(views.APIView):
         return Response({'success': 'Товар успешно удален из понравившихся.'})
 
 
+@extend_schema(
+    description='Этот эндпоинт служит для просмотра понравившихся товаров'
+)
 class LikeListApiView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ProductSerializer
@@ -79,6 +101,9 @@ class LikeListApiView(generics.ListAPIView):
         return queryset
 
 
+@extend_schema(
+    description='Просмотр лайкнутого товара, если надо'
+)
 class LikeProductCheckApiView(generics.RetrieveAPIView):
     serializer_class = ProductDetailSerializer
     permission_classes = [permissions.IsAuthenticated]

@@ -72,3 +72,7 @@ class PhoneNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["phone_number"]
+
+
+class VerifyCodeSerializer(serializers.Serializer):
+    verify_code = serializers.CharField(required=True)
