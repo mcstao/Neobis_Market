@@ -21,7 +21,7 @@ class ProductCreateAPIView(generics.CreateAPIView):
 
 
 @extend_schema(
-    description='Этот эндпоинт служит для подтверждение почты'
+    description='Этот эндпоинт служит для получение всех товаров'
 )
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
